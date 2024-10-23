@@ -1,20 +1,19 @@
 import React from 'react';
 
-
-const Filters = () => {
+const Filters = ({ setFilter }) => {
 	return (
 		<ul className="filters">
 			<li>
-				<button className="selected">All</button>
+				<button onClick={() => setFilter('all')} className="selected">All</button>
 			</li>
 			<li>
-				<button>Active</button>
+				<button onClick={() => setFilter('active')}>Active</button>
 			</li>
 			<li>
-				<button>Completed</button>
+				<button onClick={() => setFilter('completed')}>Completed</button>
 			</li>
 		</ul>
-	)
+	);
 }
 
 export default Filters;
