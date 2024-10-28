@@ -1,7 +1,37 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { differenceInSeconds, differenceInMinutes } from 'date-fns';
 
 export default class Task extends Component {
+
+	static defaultProps = {
+		task: {
+			id: null,
+			description: '',
+			isCompleted: false,
+			isEditing: false,
+			createdAt: new Date()
+		},
+		completeTask: () => {},
+		deleteTask: () => {},
+		toggleEditMode: () => {},
+		editTask: () => {}
+	}
+
+	static propTypes = {
+		task: PropTypes.shape({
+			id: PropTypes.number.isRequired,
+			description: PropTypes.string.isRequired,
+			isCompleted: PropTypes.bool.isRequired,
+			isEditing: PropTypes.bool.isRequired,
+			createdAt: PropTypes.instanceOf(Date).isRequired,
+		}).isRequired,
+		completeTask: PropTypes.func.isRequired,
+		deleteTask: PropTypes.func.isRequired,
+		toggleEditMode: PropTypes.func.isRequired,
+		editTask: PropTypes.func.isRequired
+	}
+
 	state = {
 		timeSinceCreation: '',
 		editedDescription: this.props.task.description

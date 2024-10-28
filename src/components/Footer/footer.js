@@ -1,5 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import Filters from "../TasksFilter";
+
 
 const Footer = ({ remainingCount, clearCompleted, setFilter }) => {
     return (
@@ -9,6 +12,18 @@ const Footer = ({ remainingCount, clearCompleted, setFilter }) => {
             <button className="clear-completed" onClick={clearCompleted}>Clear completed</button>
         </footer>
     );
+}
+
+Footer.defaultProps = {
+	remainingCount: 0,
+	clearCompleted: () => {},
+	setFilter: () => {}
+}
+
+Footer.propTypes = {
+	remainingCount: PropTypes.number,
+	clearCompleted: PropTypes.func,
+	setFilter: PropTypes.func.isRequired
 }
 
 export default Footer;

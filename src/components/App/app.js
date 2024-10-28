@@ -1,15 +1,37 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import Header from "../Header";
 import Main from '../Main';
 
-class App extends Component {
-	state = {
-		tasks: [
+
+export default class App extends Component {
+
+	static defaultProps = {
+		initialTasks: [
 			{ id: 1, description: 'Completed task', isCompleted: true, isEditing: false, createdAt: new Date(Date.now() - 17000) },
 			{ id: 2, description: 'Editing task', isCompleted: false, isEditing: true, createdAt: new Date(Date.now() - 300000) },
 			{ id: 3, description: 'Active task', isCompleted: false, isEditing: false, createdAt: new Date(Date.now() - 300000) }
 		],
-		filter: 'all',
+		initialFilter: 'all'
+	}
+
+	static propTypes = {
+		initialTasks: PropTypes.arrayOf(
+			PropTypes.shape({
+				id: PropTypes.number.isRequired,
+				description: PropTypes.string.isRequired,
+				isCompleted: PropTypes.bool,
+				isEditing: PropTypes.bool,
+				createdAt: PropTypes.instanceOf(Date).isRequired,
+			})
+		),
+		initialFilter: PropTypes.string,
+	}
+
+	state = {
+		tasks: this.props.initialTasks,
+		filter: this.props.initialFilter,
 	};
 
 	addTask = (description) => {
@@ -91,5 +113,3 @@ class App extends Component {
 		);
 	}
 }
-
-export default App;

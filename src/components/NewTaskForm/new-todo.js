@@ -1,6 +1,16 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 
-class NewTaskForm extends Component {
+export default class NewTaskForm extends Component {
+
+	static defaultProps = {
+		addTask: () => {}
+	}
+
+	static propTypes = {
+		addTask: PropTypes.func.isRequired
+	}
+
 	state = {
 		description: ''
 	};
@@ -31,5 +41,3 @@ class NewTaskForm extends Component {
 		);
 	}
 }
-
-export default NewTaskForm;
