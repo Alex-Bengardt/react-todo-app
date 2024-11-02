@@ -1,24 +1,23 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import NewTaskForm from "../NewTaskForm";
+import NewTaskForm from '../NewTaskForm'
 
-
-const Header = ({ addTask }) => {
-	return (
-		<header className="header">
-			<h1>todos</h1>
-			<NewTaskForm addTask={addTask} />
-		</header>
-	);
+function Header({ addTask }) {
+  return (
+    <header className="header">
+      <h1>todos</h1>
+      <NewTaskForm addTask={addTask} />
+    </header>
+  )
 }
 
 Header.defaultProps = {
-	addTask: () => {}
+  addTask: () => {},
 }
 
 Header.propTypes = {
-	addTask: PropTypes.func.isRequired
+  addTask: PropTypes.func.isRequired,
 }
 
-export default Header;
+export default Header
