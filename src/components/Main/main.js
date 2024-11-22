@@ -7,12 +7,14 @@ import TaskList from '../TaskList'
 export default class Main extends Component {
   static defaultProps = {
     tasks: [],
-    editTaks: () => {},
+    editTask: () => {}, // Исправлено название
     completeTask: () => {},
     deleteTask: () => {},
     clearCompleted: () => {},
     toggleEditMode: () => {},
     setFilter: () => {},
+    startTimer: () => {},
+    stopTimer: () => {},
   }
 
   static propTypes = {
@@ -23,6 +25,8 @@ export default class Main extends Component {
         isCompleted: PropTypes.bool,
         isEditing: PropTypes.bool,
         createdAt: PropTypes.instanceOf(Date).isRequired,
+        elapsedTime: PropTypes.number.isRequired,
+        isTimerRunning: PropTypes.bool.isRequired,
       })
     ),
     editTask: PropTypes.func,
@@ -31,10 +35,22 @@ export default class Main extends Component {
     clearCompleted: PropTypes.func,
     toggleEditMode: PropTypes.func,
     setFilter: PropTypes.func.isRequired,
+    startTimer: PropTypes.func.isRequired,
+    stopTimer: PropTypes.func.isRequired,
   }
 
   render() {
-    const { tasks, editTask, completeTask, deleteTask, clearCompleted, toggleEditMode, setFilter } = this.props
+    const {
+      tasks,
+      editTask,
+      completeTask,
+      deleteTask,
+      clearCompleted,
+      toggleEditMode,
+      setFilter,
+      startTimer,
+      stopTimer,
+    } = this.props
 
     const remainingCount = tasks.filter((task) => !task.isCompleted).length
 
@@ -46,6 +62,8 @@ export default class Main extends Component {
           completeTask={completeTask}
           deleteTask={deleteTask}
           toggleEditMode={toggleEditMode}
+          startTimer={startTimer}
+          stopTimer={stopTimer}
         />
         <Footer remainingCount={remainingCount} clearCompleted={clearCompleted} setFilter={setFilter} />
       </section>

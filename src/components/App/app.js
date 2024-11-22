@@ -13,6 +13,8 @@ export default class App extends Component {
         isCompleted: true,
         isEditing: false,
         createdAt: new Date(Date.now() - 17000),
+        elapsedTime: 0,
+        isTimerRunning: false,
       },
       {
         id: 2,
@@ -20,6 +22,8 @@ export default class App extends Component {
         isCompleted: false,
         isEditing: true,
         createdAt: new Date(Date.now() - 300000),
+        elapsedTime: 0,
+        isTimerRunning: false,
       },
       {
         id: 3,
@@ -27,6 +31,8 @@ export default class App extends Component {
         isCompleted: false,
         isEditing: false,
         createdAt: new Date(Date.now() - 300000),
+        elapsedTime: 0,
+        isTimerRunning: false,
       },
     ],
     initialFilter: 'all',
@@ -40,6 +46,8 @@ export default class App extends Component {
         isCompleted: PropTypes.bool,
         isEditing: PropTypes.bool,
         createdAt: PropTypes.instanceOf(Date).isRequired,
+        elapsedTime: PropTypes.number.isRequired,
+        isTimerRunning: PropTypes.bool.isRequired,
       })
     ),
     initialFilter: PropTypes.string,
@@ -57,6 +65,8 @@ export default class App extends Component {
       isCompleted: false,
       isEditing: false,
       createdAt: new Date(),
+      elapsedTime: 0,
+      isTimerRunning: false,
     }
 
     this.setState(({ tasks }) => ({
@@ -98,6 +108,49 @@ export default class App extends Component {
     this.setState({ filter })
   }
 
+  // Обновления для работы с таймером
+  startTimer = (id) => {
+    this.setState(({ tasks }) => ({
+      tasks: tasks.map((task) =>
+        task.id === id
+          ? {
+              ...task,
+              isTimerRunning: true,
+              timerStart: Date.now() - task.elapsedTime * 1000, // сохраняем начальную точку
+            }
+          : task
+      ),
+    }))
+
+    // Сохраняем интервал для каждой задачи
+    if (!this.timerIntervals) this.timerIntervals = {} // Инициализация объекта для хранения интервалов
+
+    if (this.timerIntervals[id]) {
+      clearInterval(this.timerIntervals[id]) // Останавливаем старый интервал, если есть
+    }
+
+    this.timerIntervals[id] = setInterval(() => {
+      this.setState(({ tasks }) => ({
+        tasks: tasks.map((task) =>
+          task.id === id
+            ? {
+                ...task,
+                elapsedTime: Math.floor((Date.now() - task.timerStart) / 1000), // обновляем время
+              }
+            : task
+        ),
+      }))
+    }, 1000)
+  }
+
+  stopTimer = (id) => {
+    clearInterval(this.timerIntervals[id]) // Останавливаем интервал для конкретной задачи
+    this.setState(({ tasks }) => ({
+      tasks: tasks.map((task) => (task.id === id ? { ...task, isTimerRunning: false } : task)),
+    }))
+    delete this.timerIntervals[id] // Убираем интервал после его остановки
+  }
+
   render() {
     const { tasks, filter } = this.state
     const filteredTasks = tasks.filter((task) => {
@@ -118,6 +171,8 @@ export default class App extends Component {
           toggleEditMode={this.toggleEditMode}
           setFilter={this.setFilter}
           totalTasks={tasks.length}
+          startTimer={this.startTimer}
+          stopTimer={this.stopTimer}
         />
       </section>
     )

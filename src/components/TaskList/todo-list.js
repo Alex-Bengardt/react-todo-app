@@ -10,6 +10,8 @@ export default class TaskList extends Component {
     deleteTask: () => {},
     editTask: () => {},
     toggleEditMode: () => {},
+    startTimer: () => {},
+    stopTimer: () => {},
   }
 
   static propTypes = {
@@ -20,16 +22,20 @@ export default class TaskList extends Component {
         isCompleted: PropTypes.bool.isRequired,
         isEditing: PropTypes.bool.isRequired,
         createdAt: PropTypes.instanceOf(Date).isRequired,
+        elapsedTime: PropTypes.number.isRequired,
+        isTimerRunning: PropTypes.bool.isRequired,
       })
     ).isRequired,
     completeTask: PropTypes.func.isRequired,
     deleteTask: PropTypes.func.isRequired,
     editTask: PropTypes.func.isRequired,
     toggleEditMode: PropTypes.func.isRequired,
+    startTimer: PropTypes.func.isRequired,
+    stopTimer: PropTypes.func.isRequired,
   }
 
   render() {
-    const { tasks, completeTask, deleteTask, editTask, toggleEditMode } = this.props
+    const { tasks, completeTask, deleteTask, editTask, toggleEditMode, startTimer, stopTimer } = this.props
 
     return (
       <ul className="todo-list">
@@ -41,6 +47,8 @@ export default class TaskList extends Component {
             deleteTask={deleteTask}
             editTask={editTask}
             toggleEditMode={toggleEditMode}
+            startTimer={startTimer}
+            stopTimer={stopTimer}
           />
         ))}
       </ul>
