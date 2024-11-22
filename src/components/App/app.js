@@ -112,13 +112,7 @@ export default class App extends Component {
   startTimer = (id) => {
     this.setState(({ tasks }) => ({
       tasks: tasks.map((task) =>
-        task.id === id
-          ? {
-              ...task,
-              isTimerRunning: true,
-              timerStart: Date.now() - task.elapsedTime * 1000, // сохраняем начальную точку
-            }
-          : task
+        task.id === id ? { ...task, isTimerRunning: true, timerStart: Date.now() - task.elapsedTime * 1000 } : task
       ),
     }))
 
@@ -132,12 +126,7 @@ export default class App extends Component {
     this.timerIntervals[id] = setInterval(() => {
       this.setState(({ tasks }) => ({
         tasks: tasks.map((task) =>
-          task.id === id
-            ? {
-                ...task,
-                elapsedTime: Math.floor((Date.now() - task.timerStart) / 1000), // обновляем время
-              }
-            : task
+          task.id === id ? { ...task, elapsedTime: Math.floor((Date.now() - task.timerStart) / 1000) } : task
         ),
       }))
     }, 1000)
